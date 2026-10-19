@@ -42,11 +42,6 @@ public class GestorPiezas {
             // Procesa el resultSet y muestra la informacion obtenida desde la BD
             while(rs.next()){
             	
-            		/*int idTipoPieza = rs.getInt("idTipoPieza");
-                    int idPieza=rs.getInt("idPieza");
-            		System.out.println("Pieza Nro: " + String.valueOf(idPieza)
-            		+ " tipo " + rs.getString("Descripcion")  )*/
-
                   int idPieza = rs.getInt("IDPIEZA");
             		System.out.println("Pieza Nro: " + String.valueOf(idPieza)
                     + ", Tipo: " + rs.getString("TipoPieza") + ", Color: " + rs.getString("Color")
@@ -81,13 +76,13 @@ public class GestorPiezas {
     try (
         Connection conexion = new AccesoDatos().getConexion();
          PreparedStatement stmt = conexion.prepareStatement(sql)) {
-
-        int idColor = obtenerIdColor(pieza);
         
         LocalDate fecha=LocalDate.now();
 
         String piezaNombre= pieza.getClass().getSimpleName();
+        String piezaColor= pieza.getColor();
 
+        int idColor= Pieza.colorPieza.valueOf(piezaColor).getIdColorPieza();
         int idTipoPieza = Pieza.tipoPieza.valueOf(piezaNombre).getIdTipoPieza();
 
         // Asignar los parámetros en la consulta
@@ -104,19 +99,6 @@ public class GestorPiezas {
     } catch (SQLException e) {
         e.printStackTrace();
         System.out.println("---ERROR PIEZA NO INSERTADA---\n");
+        }
     }
 }
-
-  public static int obtenerIdColor(Pieza p){
-       int idColor=0;
-
-       if(p.getColor()=="Negro"){
-        idColor=2;
-       }else{
-        idColor=1;
-       }
-       return idColor;
-    }
-
-}
-
