@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+
 public class GestorPiezas {
 
     public static void mostrarPiezasBD()
@@ -17,7 +18,16 @@ public class GestorPiezas {
 		ResultSet rs=null; //Resultado de la Query si devuelve algo 
 		
 		// Se crea la consulta usando lenguaje SQL Estandar y almacenando en la variable query
-		String query = "select * from pieza";
+		String query = "select idPieza, \n" + //
+                        "TP.DescripciondePieza as TipoPieza , \n" + //
+                        "C.Descripcion as Color, \n" + //
+                        "P.Descripcion as ResumenPieza, \n" + //
+                        "Posicion, \n" + //
+                        "Movimiento, \n" + //
+                        "Comportamiento, \n" + //
+                        "Velocidad \n" + //
+                        "from Pieza P inner join tipopieza TP on P.idtipoPieza = TP.idtipoPieza\n" + //
+                        "inner join Color C on P.idColor = C.idColor";
         //En este bloque se ejecutan las sentencias necesarias para acceder a la BD y obtener la informacion
         try {
         	// Instancio un objeto de acceso a datos
@@ -32,10 +42,16 @@ public class GestorPiezas {
             // Procesa el resultSet y muestra la informacion obtenida desde la BD
             while(rs.next()){
             	
-            		//int idTipoPieza = rs.getInt("idTipoPieza");
+            		/*int idTipoPieza = rs.getInt("idTipoPieza");
                     int idPieza=rs.getInt("idPieza");
             		System.out.println("Pieza Nro: " + String.valueOf(idPieza)
-            		+ " tipo " + rs.getString("Descripcion")  ) ;	            	            			
+            		+ " tipo " + rs.getString("Descripcion")  )*/
+
+                  int idPieza = rs.getInt("IDPIEZA");
+            		System.out.println("Pieza Nro: " + String.valueOf(idPieza)
+                    + ", Tipo: " + rs.getString("TipoPieza") + ", Color: " + rs.getString("Color")
+                    + ", Movimiento: " + rs.getString("MOVIMIENTO")
+                    + ", Comportamiento: " + rs.getString("COMPORTAMIENTO") + ", Velocidad: " + rs.getInt("VELOCIDAD"));   	            			
 			}    
             
         } catch (SQLException e) {
